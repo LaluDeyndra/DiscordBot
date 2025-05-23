@@ -5,3 +5,5 @@ package-lock.json
 dist
 .vscode
 .idea
+package.json
+yarn-error.log
