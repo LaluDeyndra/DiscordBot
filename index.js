@@ -1,6 +1,5 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder, Events, SlashCommandBuilder, REST, Routes } = require('discord.js');
-
 // Initialize client
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
@@ -56,6 +55,13 @@ const userCollections = new Map();
 
 // Gacha animation messages
 const gachaMessages = ['Rolling the gacha...', 'Summoning the waifu/husbando...', "Pulling with your heart's desire...", 'The gacha gods are deciding...', 'Will you get lucky this time?'];
+
+// Special effects for rare pulls
+const specialEffects = {
+  Mythic: 'https://media.giphy.com/media/3o7abKhK8ErT1k3zU4/giphy.gif',
+  Legendary: 'https://media.giphy.com/media/3o7abKhK8ErT1k3zU4/giphy.gif',
+  Epic: 'https://media.giphy.com/media/3o7abKhK8ErT1k3zU4/giphy.gif',
+};
 
 // Enhanced gacha function with animation simulation
 async function performGacha(interaction, pool) {
@@ -144,9 +150,9 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 // Deploy commands
 (async () => {
   try {
-    console.log('🔁 Registering commands...');
+    console.log('Registering commands...');
     await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), { body: commands });
-    console.log('✅ Commands registered successfully.');
+    console.log('Commands registered successfully.');
   } catch (error) {
     console.error('❌ Command registration error:', error);
   }
@@ -154,8 +160,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 // Bot ready event
 client.once(Events.ClientReady, () => {
-  console.log(`🤖 Bot ready as ${client.user.tag}`);
-  client.user.setActivity('Gacha Games | /gacha');
+  console.log(`Bot ready as ${client.user.tag}`);
 });
 
 // Command handling
@@ -263,7 +268,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         .setColor('#FF69B4') // Pink color theme
         .setTitle('🌸 **Waifu/Husbando Gacha Help** 🌸')
         .setDescription("Welcome to the ultimate anime character gacha experience! Here's how to use the bot:")
-        .setThumbnail('https://i.imgur.com/KkZQN5y.png') // Replace with your bot's icon
+        .setThumbnail('https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/anime%20icon.jpeg?raw=true')
         .addFields(
           {
             name: '🎰 **Gacha Commands**',
@@ -287,14 +292,19 @@ client.on(Events.InteractionCreate, async (interaction) => {
           },
           {
             name: '🎯 **Game Mechanics**',
-            value: '• Each pull gives you points based on rarity\n' + '• Collect all characters to complete your gallery\n' + '• Special animations for rare pulls!\n' + '• Compete with friends on the leaderboard',
+            value:
+              '• Each pull gives you points based on rarity\n' +
+              '• Collect all characters to complete your gallery\n' +
+              '• Special animations for rare pulls!\n' +
+              '• Compete with friends on the leaderboard\n' +
+              '• /gachahelp has been moved to /gacha-help',
             inline: false,
           }
         )
-        .setImage('https://i.imgur.com/7VZJz9G.gif') // Cool gacha-themed gif
+        .setImage('https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/yor.jpg?raw=true')
         .setFooter({
           text: 'Gacha Bot v2.0 | Collect them all!',
-          iconURL: 'https://i.imgur.com/KkZQN5y.png', // Small bot icon
+          iconURL: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/anime%20icon.jpeg?raw=true',
         });
 
       await interaction.reply({
