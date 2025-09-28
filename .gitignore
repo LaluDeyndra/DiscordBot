@@ -7,3 +7,7 @@ dist
 .idea
 package.json
 yarn-error.log
+package.json
+index.js
+.env.exmaple
+assets
