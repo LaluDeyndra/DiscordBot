@@ -103,10 +103,11 @@ function getRandomCharacter(pool) {
 }
 
 // Track user collection
-function updateUserCollection(userId, character) {
+function updateUserCollection(userId, character, type) {
   if (!userCollections.has(userId)) {
     userCollections.set(userId, {
-      collection: new Map(),
+      waifu: new Map(),
+      husbando: new Map(),
       totalPulls: 0,
       points: 0,
     });
@@ -116,14 +117,17 @@ function updateUserCollection(userId, character) {
   userData.totalPulls++;
   userData.points += character.pullValue;
 
-  if (!userData.collection.has(character.name)) {
-    userData.collection.set(character.name, {
+  // Pilih koleksi sesuai tipe
+  const collection = type === 'husbando' ? userData.husbando : userData.waifu;
+
+  if (!collection.has(character.name)) {
+    collection.set(character.name, {
       count: 1,
       firstObtained: new Date(),
       rarity: character.rarity,
     });
   } else {
-    const charData = userData.collection.get(character.name);
+    const charData = collection.get(character.name);
     charData.count++;
   }
 
@@ -175,7 +179,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
       const pool = type === 'husbando' ? husbandos : waifus;
 
       const result = await performGacha(interaction, pool);
-      const userData = updateUserCollection(user.id, result);
+      const userData = updateUserCollection(user.id, result, type);
+
+      // Pilih koleksi sesuai tipe
+      const collection = type === 'husbando' ? userData.husbando : userData.waifu;
 
       // Create enhanced embed
       const embed = new EmbedBuilder()
@@ -188,7 +195,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
           { name: '📊 Your Stats', value: `Pulls: ${userData.totalPulls} | Points: ${userData.points}`, inline: false }
         )
         .setImage(result.image)
-        .setFooter({ text: `Collection: ${userData.collection.size}/${pool.length} | ${user.username}'s pull #${userData.totalPulls}` });
+        .setFooter({ text: `Collection: ${collection.size}/${pool.length} | ${user.username}'s pull #${userData.totalPulls}` });
 
       // Add special effect for rare pulls
       if (specialEffects[result.rarity]) {
@@ -197,21 +204,23 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
       await interaction.editReply({ content: null, embeds: [embed] });
     } else if (commandName === 'collection') {
-      // Collection viewing logic
       const targetUser = interaction.options.getUser('user') || user;
       const userData = userCollections.get(targetUser.id) || {
-        collection: new Map(),
+        waifu: new Map(),
+        husbando: new Map(),
         totalPulls: 0,
         points: 0,
       };
 
+      // Gabungkan waifu dan husbando
+      const allCollection = new Map([...userData.waifu, ...userData.husbando]);
       const pool = [...waifus, ...husbandos];
-      const collected = Array.from(userData.collection.entries()).sort((a, b) => rarityData[b[1].rarity].multiplier - rarityData[a[1].rarity].multiplier);
+      const collected = Array.from(allCollection.entries()).sort((a, b) => rarityData[b[1].rarity].multiplier - rarityData[a[1].rarity].multiplier);
 
       const embed = new EmbedBuilder()
         .setColor('#00BFFF')
         .setTitle(`${targetUser.username}'s Collection`)
-        .setDescription(`📊 **${userData.collection.size}/${pool.length}** characters collected\n✨ **${userData.points}** total points`)
+        .setDescription(`📊 **${allCollection.size}/${pool.length}** characters collected\n✨ **${userData.points}** total points`)
         .setThumbnail(targetUser.displayAvatarURL());
 
       // Add top 5 rarest characters
@@ -227,26 +236,26 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
       await interaction.reply({ embeds: [embed] });
     } else if (commandName === 'gacha-stats') {
-      // Stats command logic
       const userData = userCollections.get(user.id) || {
-        collection: new Map(),
+        waifu: new Map(),
+        husbando: new Map(),
         totalPulls: 0,
         points: 0,
       };
 
       const pool = [...waifus, ...husbandos];
+      const allCollection = new Map([...userData.waifu, ...userData.husbando]);
       const embed = new EmbedBuilder()
         .setColor('#FF69B4')
         .setTitle(`${user.username}'s Gacha Stats`)
         .addFields(
           { name: '🎫 Total Pulls', value: userData.totalPulls.toString(), inline: true },
           { name: '✨ Total Points', value: userData.points.toString(), inline: true },
-          { name: '📚 Collection', value: `${userData.collection.size}/${pool.length}`, inline: true }
+          { name: '📚 Collection', value: `${allCollection.size}/${pool.length}`, inline: true }
         );
 
       await interaction.reply({ embeds: [embed] });
     } else if (commandName === 'gacha-leaderboard') {
-      // Leaderboard logic
       const sortedUsers = Array.from(userCollections.entries())
         .sort((a, b) => b[1].points - a[1].points)
         .slice(0, 10);
@@ -256,7 +265,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
       if (sortedUsers.length > 0) {
         embed.addFields({
           name: 'Rankings',
-          value: sortedUsers.map(([id, data], index) => `${['🥇', '🥈', '🥉'][index] || `🏅`} <@${id}> - ${data.points}pts (${data.collection.size} chars)`).join('\n'),
+          value: sortedUsers
+            .map(([id, data], index) => {
+              const allCollection = new Map([...data.waifu, ...data.husbando]);
+              return `${['🥇', '🥈', '🥉'][index] || `🏅`} <@${id}> - ${data.points}pts (${allCollection.size} chars)`;
+            })
+            .join('\n'),
         });
       } else {
         embed.setDescription('No data yet. Be the first to pull with `/gacha`!');
