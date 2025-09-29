@@ -26,7 +26,7 @@ const waifus = [
     image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/marin.png?raw=true',
     rarity: 'Legendary',
     series: 'My Dress-Up Darling',
-    quote: 'Gojo-Kunnnnnnnnnnnnnnnnnnnnn',
+    quote: "Let's make every day a cosplay day!",
   },
 ];
 
@@ -52,6 +52,14 @@ const husbandos = [
     rarity: 'Common',
     series: 'That Time I Got Reincarnated as a Slime',
     quote: "Let's all get along!",
+  },
+  {
+    name: 'Chrolo Lucilfer',
+    image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/husbandoi%20images/chrolo.jpeg?raw=true',
+    rarity: 'Mythic',
+    series: 'Hunter x Hunter',
+    quote:
+      'In this world, wherever there is light - there are also shadows. As long as the concept of winners exists, there must also be losers. The selfish desire of wanting to preserve peace causes wars and hatred is born to protect love.',
   },
 ];
 
