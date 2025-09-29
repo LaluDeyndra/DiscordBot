@@ -256,6 +256,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
         });
       }
 
+      if (collected.length > 0) {
+        embed.addFields({
+          name: '📋 All Collected Characters',
+          value: collected.map(([name, data]) => `${rarityData[data.rarity].emoji} ${name} (x${data.count})`).join('\n'),
+        });
+      }
+
       await interaction.reply({ embeds: [embed] });
     } else if (commandName === 'gacha-stats') {
       const userData = userCollections.get(user.id) || {
