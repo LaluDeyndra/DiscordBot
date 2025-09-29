@@ -66,10 +66,10 @@ const husbandos = [
 // Enhanced rarity system with visual indicators
 const rarityData = {
   Mythic: { chance: 0.5, color: '#c40e04', emoji: '💎', multiplier: 10 },
-  Legendary: { chance: 3, color: '#FFD700', emoji: '✨', multiplier: 5 },
+  Legendary: { chance: 5, color: '#FFD700', emoji: '✨', multiplier: 5 },
   Epic: { chance: 10, color: '#9932CC', emoji: '🔥', multiplier: 3 },
   Rare: { chance: 25, color: '#4169E1', emoji: '⭐', multiplier: 2 },
-  Common: { chance: 61.5, color: '#C0C0C0', emoji: '⚪', multiplier: 1 },
+  Common: { chance: 59.5, color: '#C0C0C0', emoji: '⚪', multiplier: 1 },
 };
 
 // User collection tracking
@@ -320,10 +320,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
             name: '🌟 **Rarity System**',
             value:
               '```💎 Mythic (0.5%)```Ultra rare special versions!\n' +
-              '```✨ Legendary (3%)```Powerful and beautiful!\n' +
+              '```✨ Legendary (5%)```Powerful and beautiful!\n' +
               '```🔥 Epic (10%)```Strong characters\n' +
               '```⭐ Rare (25%)```Good finds\n' +
-              '```⚪ Common (61.5%)```Standard pulls',
+              '```⚪ Common (59.5%)```Standard pulls',
             inline: false,
           },
           {
