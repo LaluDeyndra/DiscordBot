@@ -14,6 +14,20 @@ const waifus = [
   { name: 'Hinata', image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/hinata.jpg?raw=true', rarity: 'Epic', series: 'Naruto', quote: "I've loved you all along, Naruto!" },
   { name: 'Yor Forger', image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/yor%20forger.jpg?raw=true', rarity: 'Legendary', series: 'Spy x Family', quote: "I'll protect my family at all costs." },
   { name: 'Yor Forger (Special Ver.)', image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/yor.jpg?raw=true', rarity: 'Mythic', series: 'Spy x Family', quote: 'Even assassins deserve love.' },
+  {
+    name: 'Waguri Kaoruko',
+    image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/Waguri.png?raw=true',
+    rarity: 'Mythic',
+    series: 'The fragrant flower blooms with dignity',
+    quote: "I'll always be by your side.",
+  },
+  {
+    name: 'Marin Kitagawa',
+    image: 'https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/marin.png?raw=true',
+    rarity: 'Legendary',
+    series: 'My Dress-Up Darling',
+    quote: 'Gojo-Kunnnnnnnnnnnnnnnnnnnnn',
+  },
 ];
 
 const husbandos = [
