@@ -313,6 +313,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
               '• Compete with friends on the leaderboard\n' +
               '• /gachahelp has been moved to /gacha-help',
             inline: false,
+          },
+          {
+            name: '📄 Terms and Privacy Policy',
+            value: '[• Read Terms and Privacy Policy](https://laludeyndra.github.io/DiscordBot/)',
+            inline: false,
           }
         )
         .setImage('https://github.com/LaluDeyndra/DiscordBot/blob/main/assets/images/waifu%20images/yor.jpg?raw=true')
