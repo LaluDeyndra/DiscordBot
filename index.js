@@ -366,5 +366,25 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
+const express = require('express');
+const app = express();
+const cors = require('cors');
+app.use(cors());
+
+// Endpoint ping untuk web
+app.get('/ping', (req, res) => {
+  if (client.isReady()) {
+    res.json({ status: 'online', tag: client.user.tag });
+  } else {
+    res.json({ status: 'offline' });
+  }
+});
+
+app.listen(3000, () => console.log('Ping server jalan di port 3000'));
+
+client.once('clientReady', () => {
+  console.log(`✅ Bot login sebagai ${client.user.tag}`);
+});
+
 // Login
 client.login(process.env.DISCORD_TOKEN);
